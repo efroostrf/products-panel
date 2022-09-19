@@ -6,6 +6,7 @@ import { ModalHeader, AutocompleteSizes } from 'components/SpringModal/template'
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { modalsSlice, MODALS_CATEGORY_EDIT } from 'utils/store/reducers/ModalsSlice';
 import { categoryApi } from 'services/CategoryService';
+import { productApi } from 'services/ProductService';
 
 const CategoryEditModal: NextPage = () => {
   const [error, setError] = useState(false);
@@ -27,6 +28,7 @@ const CategoryEditModal: NextPage = () => {
       name: name,
       sizes: sizes
     }));
+    dispatch(productApi.util.invalidateTags(['Product']));
     close();
   };
 
