@@ -13,16 +13,11 @@ const ProductCreateModal: NextPage = () => {
   const [name, setName] = useState('');
   const [barcode, setBarcode] = useState('');
   const [file, setFile] = useState(null);
+  const [isCategoryClicked, setCategoryClicked] = useState(false);
   const { selectedCategory } = useAppSelector(state => state.dataReducer);
   const { isCreatingNew } = useAppSelector(state => state.modalsReducer.products);
   const [createProduct, {}] = productApi.useCreateProductMutation();
   const dispatch = useAppDispatch();
-
-  const updateBarcode = (event: ChangeEvent<HTMLInputElement>) => {
-    const onlyNums = event.target.value.replace(/[^0-9]/g, '');
-    if (onlyNums.length > 0) setBarcode(onlyNums);
-    else setBarcode('');
-  };
 
   const fileUpload = (file: File, data: string | ArrayBuffer) => {
     setFile({
@@ -37,10 +32,32 @@ const ProductCreateModal: NextPage = () => {
       setName('');
       setBarcode('');
       setFile(null);
+      setCategoryClicked(false);
     }, 250);
   };
 
-  const openCategorySelect = () => dispatch(modalsSlice.actions.show(MODALS_SELECT_CATEGORY));
+  const updateName = (value: string) => {
+    if (String(value).trim().length === 0) setError({...error, name: true});
+    else setError({...error, name: false});
+    setName(value);
+  };
+
+  const updateBarcode = (event: ChangeEvent<HTMLInputElement>) => {
+    const onlyNums = event.target.value.replace(/[^0-9]/g, '');
+    if (onlyNums.length > 0) {
+      setBarcode(onlyNums);
+      setError({...error, barcode: false});
+    } else {
+      setBarcode('');
+      setError({...error, barcode: true});
+    }
+  };
+
+  const openCategorySelect = () => {
+    dispatch(modalsSlice.actions.show(MODALS_SELECT_CATEGORY));
+    setCategoryClicked(true);
+  };
+
   const action = async () => {
     await createProduct({
       name: name,
@@ -56,19 +73,21 @@ const ProductCreateModal: NextPage = () => {
 
   useEffect(() => {
     let _error = {
-      name: false,
-      barcode: false,
       category: false,
       any: false
     };
 
-    if (String(name).trim().length === 0) _error.name = true;
-    if (String(barcode).trim().length === 0) _error.barcode = true;
-    if (!selectedCategory) _error.category = true;
-    if (_error.name || _error.barcode || _error.category) _error.any = true;
+    if (!selectedCategory && isCategoryClicked) _error.category = true;
+    if (error.name || 
+        error.barcode ||
+        _error.category ||
+        name == '' ||
+        barcode == '') {
+      _error.any = true;
+    }
 
-    setError({..._error});
-  }, [name, barcode, selectedCategory]);
+    setError({...error, ..._error});
+  }, [selectedCategory, isCategoryClicked, name, barcode]);
 
   return (
     <SpringModal isActive={isCreatingNew} onClose={close}>
@@ -80,7 +99,7 @@ const ProductCreateModal: NextPage = () => {
             required 
             fullWidth
             value={name}
-            onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
+            onChange={(event: ChangeEvent<HTMLInputElement>) => updateName(event.target.value)}
             error={error.name}
         />
         <TextField 

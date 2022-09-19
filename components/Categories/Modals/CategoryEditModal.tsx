@@ -16,7 +16,12 @@ const CategoryEditModal: NextPage = () => {
   const [editCategory, {}] = categoryApi.useEditCategoryMutation();
   const dispatch = useAppDispatch();
 
-  const close = () => dispatch(modalsSlice.actions.hide(MODALS_CATEGORY_EDIT));
+  const close = () => {
+    dispatch(modalsSlice.actions.hide(MODALS_CATEGORY_EDIT));
+    setName('');
+    setSizes([]);
+  };
+
   const action = async () => {
     await editCategory(Object.assign({...selectedCategory}, {
       name: name,

@@ -16,16 +16,29 @@ const CategoryCreateModal: NextPage = () => {
   const { isCreatingNew } = useAppSelector(state => state.modalsReducer.categories);
   const dispatch = useAppDispatch();
 
+  const updateName = (value: string) => {
+    if (String(value).trim().length === 0) setError(true);
+    else setError(false);
+    setName(value);
+  };
+
   const updateSizes = (event: React.SyntheticEvent, value: string[]) => setSizes(value);
-  const close = () => dispatch(modalsSlice.actions.hide(MODALS_CATEGORY_NEW));
+  
+  const close = () => {
+    dispatch(modalsSlice.actions.hide(MODALS_CATEGORY_NEW));
+    clear();
+  };
 
   const clear = () => {
     setName('');
     setSizes([]);
+    setError(false);
   };
   
   const action = async () => {
     if (error) return;
+    if (String(name).trim().length === 0) return setError(true);
+
     await createCategory({
       name: name,
       sizes: sizes,
@@ -35,11 +48,6 @@ const CategoryCreateModal: NextPage = () => {
     close();
     clear();
   };
-
-  useEffect(() => {
-    if (String(name).trim().length === 0) setError(true);
-    else setError(false);
-  }, [name]);
 
   return (
     <SpringModal isActive={isCreatingNew} onClose={close}>
@@ -51,7 +59,7 @@ const CategoryCreateModal: NextPage = () => {
           required
           fullWidth
           value={name || ''}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => updateName(event.target.value)}
           error={error}
         />
         <AutocompleteSizes value={sizes} onSave={updateSizes}/>
