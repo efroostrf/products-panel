@@ -1,4 +1,4 @@
-.notFound {
+.popOver {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -11,6 +11,11 @@
   min-height: 200px;
   color: rgba(0, 0, 0, 0.4);
   user-select: none;
+  text-align: center;
+
+  .text {
+    padding: 20px;
+  }
 
   img {
     opacity: 0.1;
