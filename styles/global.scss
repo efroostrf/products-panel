@@ -8,4 +8,8 @@ body {
   --page-padding: 40px;
   --header-height: 100px;
   --folders-padding: 40px;
+
+  @media(max-width: 600px) {
+    --page-padding: 10px;
+  }
 }
