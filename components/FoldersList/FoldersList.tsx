@@ -37,10 +37,16 @@ const FoldersList: NextPage<Props> = ({ startFolder = null, shiftSize = 0, hideC
         </div>
       }
       {
-        isError &&
+        isError && startFolder === null &&
         <div className={styles.popOver}>
           <img src={damagedFolderIcon.src} width="150" height="150" alt="Create new category" />
           <Typography className={styles.text} variant="body1">WOops, an error arose when loading categories. Try to update the list.</Typography>
+        </div>
+      }
+      {
+        isError && startFolder !== null &&
+        <div className={styles.errorMessage}>
+          <Typography variant="body1">WOops, an error arose when loading categories. Try to update the list.</Typography>
         </div>
       }
     </>
