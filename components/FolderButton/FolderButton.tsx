@@ -31,6 +31,11 @@ const FolderButton: NextPage<Props> = ({ data, shiftSize = 0, hideControls = fal
     else dispatch(dataSlice.actions.selectCategory(data));
   };
 
+  const openFolderClick = (event) => {
+    event.stopPropagation();
+    setIsOpen(!isOpen);
+  }
+
   return (
     <>
       <ListItemButton
@@ -44,7 +49,7 @@ const FolderButton: NextPage<Props> = ({ data, shiftSize = 0, hideControls = fal
           paddingLeft: shiftSize !== 0 ? `calc(${shiftSize} * var(--folders-padding))` : null,
         }}
       >
-        <FolderButtonIndication isOpen={isOpen} isSubfolders={data.next.length > 0}/>
+        <FolderButtonIndication isOpen={isOpen} isSubfolders={data.next.length > 0} onArrowClick={openFolderClick}/>
         <ListItemText>{ data.name }</ListItemText>
         <FolderButtonControls isActive={hideControls ? false : isHover} data={data}/>
       </ListItemButton>
