@@ -1,27 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CategoryKey, ICategory } from 'models/Category';
-import { IProduct } from 'models/Product';
-
-interface Categories {
-  [key: string]: ICategory;
-}
-
-interface Products {
-  [key: string]: IProduct;
-}
+import { ICategory } from 'models/Category';
 
 interface DataState {
-  rootCategories: string[];
-  categories: Categories;
-  products: Products;
   selectedCategory: ICategory | null;
   selectedProducts: number[];
 }
 
 export const initialState: DataState = {
-  rootCategories: [],
-  categories: {},
-  products: {},
   selectedCategory: null,
   selectedProducts: []
 };
