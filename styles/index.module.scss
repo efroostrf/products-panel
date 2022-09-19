@@ -1,0 +1,12 @@
+.container {
+  position: absolute;
+  flex-wrap: wrap;
+  top: 0;
+  left: 0;
+  gap: 20px;
+  padding: var(--page-padding);
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: space-between;
+}

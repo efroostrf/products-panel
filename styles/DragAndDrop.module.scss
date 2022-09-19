@@ -1,0 +1,39 @@
+.form {
+  position: relative;
+  padding: 20px;
+  border: 2px dashed rgba(0, 0, 0, 0.5);
+  border-radius: 15px;
+  cursor: pointer;
+
+  &:hover {
+    border: 2px dashed rgba(0, 0, 0, 0.4);
+
+    img {
+      opacity: 0.6;
+    }
+  }
+
+  img {
+    opacity: 0.9;
+  }
+
+  input[type=file] {
+    display: none;
+  }
+
+  .textGroup {
+    * {
+      display: inline-block;
+    }
+  }
+
+  .dropElement {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+  }
+}
