@@ -2,10 +2,12 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import { Grid } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ToastContainer } from 'react-toastify';
 import Categories from 'components/Categories';
 import Products from 'components/Products';
 import GeneralModals from 'components/GeneralModals';
 import styles from 'styles/index.module.scss';
+import 'react-toastify/dist/ReactToastify.css';
 
 declare module '@mui/system' {
   interface BreakpointOverrides {
@@ -37,6 +39,7 @@ const Index: NextPage = () => {
         <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
       </Head>
       <GeneralModals/>
+      <ToastContainer/>
       <Grid container className={styles.container}>
         <Grid laptop={"auto"} mobile={true} item={true} position="relative" height="100%">
           <Categories/>

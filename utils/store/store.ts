@@ -3,6 +3,7 @@ import dataReducer from './reducers/DataSlice';
 import modalsReducer from './reducers/ModalsSlice';
 import { categoryApi } from 'services/CategoryService';
 import { productApi } from 'services/ProductService';
+import { rtkQueryErrorLogger } from 'utils/store/logerMiddleware';
 
 const rootReducer = combineReducers({
   dataReducer,
@@ -18,6 +19,7 @@ export const setupStore = () => {
       getDefaultMiddleware()
         .concat(categoryApi.middleware)
         .concat(productApi.middleware)
+        .concat(rtkQueryErrorLogger)
   });
 }
 
