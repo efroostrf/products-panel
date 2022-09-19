@@ -46,7 +46,7 @@ const FoldersList: NextPage<Props> = ({ startFolder = null, shiftSize = 0, hideC
       {
         isError && startFolder !== null &&
         <div className={styles.errorMessage}>
-          <Typography variant="body1">WOops, an error arose when loading categories. Try to update the list.</Typography>
+          <Typography className={styles.text} variant="body1">WOops, an error arose when loading categories. Try to update the list.</Typography>
         </div>
       }
     </>
