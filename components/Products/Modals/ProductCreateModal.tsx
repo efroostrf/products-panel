@@ -99,7 +99,7 @@ const ProductCreateModal: NextPage = () => {
           onClick={openCategorySelect}>
           { selectedCategory ? `Category: ${selectedCategory.name}` : 'Select category' }
         </Button>
-        <DragAndDrop onUpload={fileUpload}/>
+        <DragAndDrop multiple={false} onUpload={fileUpload}/>
         <Button variant="contained" onClick={action} disabled={error.any}>Submit</Button> 
       </Stack>
     </SpringModal>

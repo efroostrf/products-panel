@@ -36,4 +36,9 @@
     bottom: 0px;
     left: 0px;
   }
+
+  &[data-error="true"] {
+    border: 2px dashed rgba(255, 0, 0, 0.5);
+    color: rgba(255, 0, 0, 0.5);
+  }
 }

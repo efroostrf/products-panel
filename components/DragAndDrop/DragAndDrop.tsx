@@ -10,6 +10,7 @@ interface Props {
 }
 
 const DragAndDrop: NextPage<Props> = ({ onUpload = function() {}, multiple = false }) => {
+  const [error, setError] = useState(false);
   const [preview, setPreview] = useState(null);
   const [uploadedFiles, setUploadedFiles] = useState(null);
   const [isDragActive, setIsDragActive] = useState(false);
@@ -42,16 +43,21 @@ const DragAndDrop: NextPage<Props> = ({ onUpload = function() {}, multiple = fal
   };
 
   const onButtonClick = (): void => {
+    setError(false);
     inputRef.current.click();
   };
 
   const dropImage = useMemo(() => {
-    if (preview) return preview;
+    if (preview && !error) return preview;
     else return dropImageNull.src;
   }, [preview]);
 
   useEffect(() => {
     if (uploadedFiles && uploadedFiles[0]) {
+      if (uploadedFiles[0].size > 1048576) {
+        setUploadedFiles(null);
+        return setError(true);
+      }
       let reader = new FileReader();
       
       reader.onload = (event) => {
@@ -64,16 +70,29 @@ const DragAndDrop: NextPage<Props> = ({ onUpload = function() {}, multiple = fal
   }, [uploadedFiles]);
 
   return (
-    <form className={styles.form} onDragEnter={onDragEvent} onClick={onButtonClick}>
+    <form className={styles.form} data-error={error} onDragEnter={onDragEvent} onClick={onButtonClick}>
       <input ref={inputRef} type="file" multiple={multiple} onChange={onBrowse} accept=".jpg,.jpeg,.png,.gif"/>
       <Stack direction="row" spacing={4} justifyContent="center" alignItems="center">
-        <img src={dropImage} width="100" height="100"/>
-        <div className={styles.textGroup}>
-          <Typography variant="subtitle1">
-            Drop file here or click
-            <Typography variant="subtitle1" color="#638df3" pl={1}>browse</Typography>
-          </Typography>
-        </div>
+        {
+          !error &&
+          <>
+            <img src={dropImage} width="100" height="100"/>
+            <div className={styles.textGroup}>
+              <Typography variant="subtitle1">
+                Drop file here or click
+                <Typography variant="subtitle1" color="#638df3" pl={1}>browse</Typography>
+              </Typography>
+            </div>
+          </>
+        }
+        {
+          error &&
+          <div className={styles.textGroup}>
+            <Typography variant="subtitle1">
+              Maximum file size: 1MB, choose another file
+            </Typography>
+          </div>
+        }
       </Stack>
       { 
         isDragActive && 
