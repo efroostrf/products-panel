@@ -46,6 +46,9 @@ export default async function handler({ method, body }: NextApiRequest, res: Nex
   }
 
   res.status(200).json({
-    result: true
+    result: true,
+    _id: Array.isArray(body)
+         ? [body.map(({ _id }) => _id)]
+         : [body._id]
   });
 }

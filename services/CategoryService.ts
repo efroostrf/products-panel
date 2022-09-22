@@ -50,7 +50,7 @@ export const categoryApi = createApi({
     }),
     updateAllCategories: build.mutation<void, void>({
       query: () => 'api/categories',
-      invalidatesTags: (result) => ['Category']
+      invalidatesTags: () => ['Category']
     })
   })
 });

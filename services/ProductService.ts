@@ -23,7 +23,7 @@ export const productApi = createApi({
       }),
       invalidatesTags: (result) => 
         result._id
-        ? [{ type: 'Product', id: result._id }]
+        ? [{ type: 'Product', id: result._id }, 'Product']
         : ['Product']
     }),
     editProduct: build.mutation<IProduct, IProduct>({
@@ -37,13 +37,16 @@ export const productApi = createApi({
         ? [{ type: 'Product', id: result._id }]
         : ['Product']
     }),
-    deleteProduct: build.mutation<IProduct, IProduct>({
+    deleteProduct: build.mutation<number[], IProduct>({
       query: (product) => ({
         url: 'api/product/delete',
         method: 'DELETE',
         body: product
       }),
-      invalidatesTags: (result) => ['Product']
+      invalidatesTags: (result) =>
+        result.length > 0
+        ? [{ type: 'Product', id: result[0] }]
+        : ['Product']
     }),
     deleteProducts: build.mutation<number[], number[]>({
       query: (products) => ({
@@ -53,12 +56,12 @@ export const productApi = createApi({
       }),
       invalidatesTags: (result) => 
         result.length > 0
-        ? [...result.map((id) => ({ type: 'Product' as const, id: id })), 'Product']
+        ? [...result.map((id) => ({ type: 'Product' as const, id: id }))]
         : ['Product']
     }),
     updateAll: build.mutation<void, void>({
       query: () => 'api/products',
-      invalidatesTags: (result) => ['Product']
+      invalidatesTags: () => ['Product']
     })
   })
 })

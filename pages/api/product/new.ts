@@ -20,5 +20,8 @@ export default async function handler({ method, body }: NextApiRequest, res: Nex
     return res.status(400).json({ error: error.message });
   }
 
-  res.status(200).json({ status: true });
+  res.status(200).json({
+    status: true,
+    _id: product._id
+  });
 }
